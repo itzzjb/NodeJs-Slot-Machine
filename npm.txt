@@ -4,3 +4,6 @@ Now we can install packages for this project -> npm i "package-name" || npm inst
 > Here we installed promt-sync package
 > It is used to get input by the user via console
 > This will result in creating package-lock.json file
+
+Running a file -> node "file-name"
+> You need to make sure that you are in the same directory as the file
