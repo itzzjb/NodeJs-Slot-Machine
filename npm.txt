@@ -1,0 +1,6 @@
+Initializing the package.json file  -> npm init
+
+Now we can install packages for this project -> npm i "package-name" || npm install "package-name"
+> Here we installed promt-sync package
+> It is used to get input by the user via console
+> This will result in creating package-lock.json file
