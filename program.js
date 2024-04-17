@@ -124,8 +124,7 @@ const spin = () => {
 
   // Now we have the symbols array with all the symbols
   // We can now have a nested array to represent the slot machine
-  // You need to show the internal arrays inside the array like this
-  const reels = [[], [], []];
+  const reels = [];
 
   // reels = [ [A, B, C], [D, A, B], [C, D, A] ]
   // reel1 = [ A, B, C ]
@@ -138,8 +137,11 @@ const spin = () => {
   // row2 = B A D
   // row3 = C B A
 
-  // Looping through every single reels
+  // Looping through reels
   for (let i = 0; i < COLS; i++) {
+    // You need to push a empty array per reel
+    reels.push([]);
+
     // We need to have a copy of the symbols array per reel
     // Because we need to shuffle the symbols array and we have to remove the selected symbols from the array to avoid duplicates
     // This is called a deep copy
@@ -148,7 +150,8 @@ const spin = () => {
     // This is not gonna create a new reference to the array
     // So the main array won't be affected by the changes in the new array
     const reelSymbols = [...symbols];
-    // Seeting the symbols for all the rows per reels
+
+    // Seeting the symbols for the rows per reel
     for (let j = 0; j < ROWS; j++) {
       // Generating a random index number
       // Math.random -> Generates a random number between 0 and 1
@@ -173,11 +176,34 @@ const spin = () => {
   return reels;
 };
 
-const reels = spin();
-console.log(reels);
+// reels = [ [A, B, C], [D, A, B], [C, D, A] ]
+// Inorder the calculate the winnings we need to have the rows of the slot machine
+// We need to transpose the matrix / 2D array in order to get the following result
+// [ A, D, C ]
+// [ B, A, D ]
+// [ C, B. A ]
+
+// Let's write a function to traspose the matrix
+const transpose = (reels) => {
+  const rows = [];
+  for (let i = 0; i < ROWS; i++) {
+    rows.push([]);
+    for (let j = 0; j < COLS; j++) {
+      rows[i].push(reels[j][i]);
+    }
+  }
+  return rows;
+};
+
+// Now we need to call the functions
+
 // We need to define this variable using let instead const becuase we need to change the value of this variable
 // const -> Can't change the value of the variable
 // let -> Can change the value of the variable
 let balance = depositMoney();
 const numberOfLines = getNumberOfLines();
 const bet = getBet(balance, numberOfLines);
+const reels = spin();
+const rows = transpose(reels);
+console.log(reels);
+console.log(rows);
