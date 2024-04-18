@@ -250,17 +250,53 @@ const getWinnings = (rows, betAmount, lines) => {
   }
 };
 
-// Now we need to call the functions
+// Define the game function and put the entire game logic inside the function
+const game = () => {
+  // Now we need to call the functions
 
-// We need to define this variable using let instead const becuase we need to change the value of this variable
-// const -> Can't change the value of the variable
-// let -> Can change the value of the variable
-let balance = depositMoney();
-const numberOfLines = getNumberOfLines();
-const bet = getBet(balance, numberOfLines);
-const reels = spin();
-const rows = transpose(reels);
-printRows(rows);
-// We pass the bet per lines not the total bet
-const wins = getWinnings(rows, bet, numberOfLines);
-console.log("You have won $ " + wins.toString());
+  // We need to define this variable using let instead const becuase we need to change the value of this variable
+  // const -> Can't change the value of the variable
+  // let -> Can change the value of the variable
+  let balance = depositMoney();
+
+  // Balance is the amount of money the user has
+  // User must be able to play until the balance is 0
+  // We need to create a loop to keep playing until the balance is 0
+
+  while (true) {
+    const numberOfLines = getNumberOfLines();
+    const bet = getBet(balance, numberOfLines);
+    // We need to subsctract the total bet from the balance
+    balance -= bet * numberOfLines;
+    const reels = spin();
+    const rows = transpose(reels);
+    printRows(rows);
+    // We pass the bet per lines not the total bet
+    const winnings = getWinnings(rows, bet, numberOfLines);
+    // We need to add the winnings to the balance
+    balance += winnings;
+    console.log("You have won $ " + winnings.toString());
+    // We need to tell the user the balance too.
+    console.log("Your balance is now $ " + balance.toString());
+
+    // If the balance is 0 we need to break the loop
+    // We need to check whether the balance is less than or equal to 0
+    if (balance <= 0) {
+      // We need to tell the user that they have ran out of money
+      console.log("You ran out of money!");
+      // We need to break the loop (while loop of the game)
+      // That means the game is over (Whole game is inside the while loop)
+      break;
+    }
+
+    // If the balance is not 0
+    // We need to ask the user whether they want to play again
+    const playAgain = prompt("Do you want to play again? (y/n)? ");
+    // We have have one line if statements like this
+    // If the user enter a value that is not equal to "y" we need to break the loop
+    // That means the game is over
+    if (playAgain != "y") break;
+  }
+};
+
+game();
