@@ -195,6 +195,61 @@ const transpose = (reels) => {
   return rows;
 };
 
+// Now we need to print the rows in the console
+const printRows = (rows) => {
+  for (const row of rows) {
+    let rowString = "";
+    // We are using the entries() method to get the index of the element
+    // Similar to enumerate() in Python
+    for (const [i, symbol] of row.entries()) {
+      // By += we are concatenating the string (adding the symbol to the string)
+      rowString += symbol;
+      // We are adding a pipe symbol to separate the symbols only if it's not the last symbol
+      if (i < row.length - 1) {
+        // By += we are concatenating the string (adding the symbol to the string)
+        rowString += " | ";
+      }
+    }
+    console.log(rowString);
+  }
+};
+
+// We need to get the winnings now
+const getWinnings = (rows, betAmount, lines) => {
+  // We need to define a variable to store the winnings
+  let winnings = 0;
+
+  // Going throught all the number of selected lines by the user
+  for (const row = 0; row < lines; row++) {
+    // Getting the symbols of the row
+    const symbols = rows[row];
+    // Creating a boolean variable to check whether all the symbols in the row are the same
+    let allSame = true;
+    // Getting the symbol of the first column
+
+    const firstSymbol = symbols[0];
+    // Going through all the symbols in the row
+    for (const symbol of symbols) {
+      // Checking whether the symbol is not the same as the first symbol
+      if (symbol !== firstSymbol) {
+        // Setting the allSame variable to false
+        allSame = false;
+        // Breaking the loop (exiting the loop)
+        break;
+      }
+    }
+
+    // If all the symbols are the same calculating the winnings
+    if (allSame) {
+      // SYMBOLS_VALUE[firstSymbol] -> Getting the value of the first symbol of selected lines from the SYMBOLS_VALUE map
+      winnings += betAmount * SYMBOLS_VALUE[firstSymbol];
+    }
+
+    // Returning the winnings
+    return winnings;
+  }
+};
+
 // Now we need to call the functions
 
 // We need to define this variable using let instead const becuase we need to change the value of this variable
@@ -205,5 +260,7 @@ const numberOfLines = getNumberOfLines();
 const bet = getBet(balance, numberOfLines);
 const reels = spin();
 const rows = transpose(reels);
-console.log(reels);
-console.log(rows);
+printRows(rows);
+// We pass the bet per lines not the total bet
+const wins = getWinnings(rows, bet, numberOfLines);
+console.log("You have won $ " + wins.toString());
